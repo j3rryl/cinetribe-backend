@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('genre_id')->nullable();
             $table->foreign('genre_id')->references('id')->on('genres')->onDelete('set null');
-            $table->string('description');
+            $table->longText('description');
             $table->string('thumbnail')->nullable();
             $table->enum('media_type', ['movie', 'music', 'sport']);
             $table->timestamps();

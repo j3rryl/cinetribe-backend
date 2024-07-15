@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('media_id')->nullable();
             $table->foreign('media_id')->references('id')->on('media')->onDelete('set null');
-            $table->string('description');
+            $table->longText('description');
             $table->string('thumbnail')->nullable();
             $table->timestamps();
         });

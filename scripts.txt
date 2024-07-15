@@ -1,2 +1,4 @@
 php artisan down
 
+php artisan make:factory MediaFactory --model=Media
+php artisan passport:client --personal
