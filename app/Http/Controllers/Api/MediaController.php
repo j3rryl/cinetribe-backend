@@ -93,7 +93,7 @@ class MediaController extends Controller
     public function update(Request $request, string $id): JsonResponse
     {
         //
-        info($request->all());
+        
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string',
             'genre_id' => 'sometimes|nullable|exists:genres,id',
@@ -111,25 +111,22 @@ class MediaController extends Controller
     
         try {
             $media = Media::findOrFail($id);
-
+            $validatedData = $validator->validated();
             if ($request->hasFile('thumbnail')) {
                 if ($media->thumbnail) {
                     Storage::delete($media->thumbnail);
                 }
                 $thumbnailPath = $request->file('thumbnail')->store('media_thumbnails');
-                $validatedData = $validator->validated();
                 $validatedData['thumbnail'] = $thumbnailPath;
-            } else {
-                $validatedData = $validator->validated();
-            }
+            } 
+            $media->update($validatedData);
 
-            $media->update($validator->validated());
-    
             return response()->json([
                 'message' => 'Media updated successfully',
-                'media' => $media,
+                'media' => $media->toArray(),
             ], 200);
         } catch (\Exception $e) {
+            info($e->getMessage());
             return response()->json(['message' => 'Failed to update media'], 500);
         }
     }
