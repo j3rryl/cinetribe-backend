@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Media;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\JsonResponse;
 
 class MediaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         //
         $media = Media::paginate(10); 
@@ -30,14 +32,14 @@ class MediaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'genre_id' => 'nullable|exists:genres,id',
             'description' => 'required|string',
-            'thumbnail' => 'nullable|string',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'media_type' => 'required|in:movie,music,sport',
         ]);
     
@@ -50,6 +52,13 @@ class MediaController extends Controller
     
         try {
             $media = Media::create($validator->validated());
+            
+            if ($request->hasFile('thumbnail')) {
+                
+                $thumbnailPath = $request->file('thumbnail')->store('media_thumbnails');
+                $media->thumbnail = $thumbnailPath;
+                $media->save();
+            } 
             return response()->json([
                 'message' => 'Media created successfully',
                 'media' => $media,
@@ -63,7 +72,7 @@ class MediaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
         //
         $media = Media::findOrFail($id); 
@@ -81,7 +90,7 @@ class MediaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
         //
         info($request->all());
@@ -89,7 +98,7 @@ class MediaController extends Controller
             'name' => 'sometimes|required|string',
             'genre_id' => 'sometimes|nullable|exists:genres,id',
             'description' => 'sometimes|required|string',
-            'thumbnail' => 'sometimes|nullable|string',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'media_type' => 'sometimes|required|in:movie,music,sport',
         ]);
     
@@ -102,6 +111,18 @@ class MediaController extends Controller
     
         try {
             $media = Media::findOrFail($id);
+
+            if ($request->hasFile('thumbnail')) {
+                if ($media->thumbnail) {
+                    Storage::delete($media->thumbnail);
+                }
+                $thumbnailPath = $request->file('thumbnail')->store('media_thumbnails');
+                $validatedData = $validator->validated();
+                $validatedData['thumbnail'] = $thumbnailPath;
+            } else {
+                $validatedData = $validator->validated();
+            }
+
             $media->update($validator->validated());
     
             return response()->json([
@@ -116,7 +137,7 @@ class MediaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         //
         try {
