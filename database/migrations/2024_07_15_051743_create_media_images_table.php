@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('media_images', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('media_id');
+            $table->foreign('media_id')->references('id')->on('media')->onDelete('cascade');
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

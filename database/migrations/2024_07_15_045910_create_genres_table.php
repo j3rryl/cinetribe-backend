@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('faction_images', function (Blueprint $table) {
+        Schema::create('genres', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('faction_id');
-            $table->foreign('faction_id')->references('id')->on('factions')->onDelete('cascade');
+            $table->string('name');
+            $table->string('description');
             $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('faction_images');
+        Schema::dropIfExists('genres');
     }
 };
