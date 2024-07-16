@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Faction extends Model
 {
     use HasFactory;
+    protected $fillable = ["name", "media_id", "description", "thumbnail"];
+
+    public function media(){
+        return $this->belongsTo(Media::class);
+    }
 }

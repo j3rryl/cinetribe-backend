@@ -9,4 +9,8 @@ class Genre extends Model
 {
     use HasFactory;
     protected $fillable = ["name", "description", "thumbnail"];
+
+    public function media(){
+        return $this->hasMany(Media::class);
+    }
 }

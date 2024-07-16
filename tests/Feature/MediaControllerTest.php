@@ -21,6 +21,18 @@ class MediaControllerTest extends TestCase
         $response = $this->get('/api/media');
         $response->assertStatus(200);
     }
+    public function test_get_media_by_id(): void
+    {
+        $media = Media::create([
+            'name' => 'New Media Name',
+            'genre_id' => null,
+            'description' => 'New Description',
+            'thumbnail' => null,
+            'media_type' => 'movie',
+        ]);
+        $response = $this->get("/api/media/".$media->id);
+        $response->assertStatus(200);
+    }
     public function test_post_media()
     {
         Storage::fake("local");
