@@ -17,4 +17,8 @@ class Media extends Model
     public function genre(){
         return $this->belongsTo(Genre::class);
     }
+
+    public function images(){
+        return $this->hasMany(MediaImage::class);
+    }
 }

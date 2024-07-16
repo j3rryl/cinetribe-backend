@@ -9,6 +9,7 @@ class MediaImage extends Model
 {
     use HasFactory;
     protected $fillable = ["thumbnail", "media_id"];
+    
     public function media(){
         return $this->belongsTo(Media::class);
     }

@@ -13,4 +13,8 @@ class Faction extends Model
     public function media(){
         return $this->belongsTo(Media::class);
     }
+
+    public function images(){
+        return $this->hasMany(FactionImage::class);
+    }
 }

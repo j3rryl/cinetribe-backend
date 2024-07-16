@@ -138,11 +138,17 @@ class MediaController extends Controller
     {
         //
         try {
-            $media = Media::findOrFail($id); 
+            $media = Media::with("images")->findOrFail($id); 
             if ($media->thumbnail) {
                 Storage::delete($media->thumbnail);
             }
-            $media->delete(); 
+
+            foreach ($media->images as $image) {
+                Storage::delete($image->thumbnail);
+                $image->delete();
+            }
+            
+            $media->delete(); //Delete the images also
             return response()->json(['message' => 'Media deleted successfully']);
         } catch (\Exception $e) {
             info($e);

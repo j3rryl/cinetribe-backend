@@ -17,7 +17,7 @@ class FactionController extends Controller
     public function index(): JsonResponse
     {
         //
-        $faction = Faction::with('media')->paginate(10); 
+        $faction = Faction::paginate(10); 
         return response()->json($faction);
     }
 
@@ -37,10 +37,9 @@ class FactionController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'genre_id' => 'nullable|exists:genres,id',
+            'media_id' => 'nullable|exists:genres,id',
             'description' => 'required|string',
             'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'faction_type' => 'required|in:movie,music,sport',
         ]);
     
         if ($validator->fails()) {
@@ -96,10 +95,9 @@ class FactionController extends Controller
         
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string',
-            'genre_id' => 'sometimes|nullable|exists:genres,id',
+            'media_id' => 'sometimes|nullable|exists:genres,id',
             'description' => 'sometimes|required|string',
             'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'faction_type' => 'sometimes|required|in:movie,music,sport',
         ]);
     
         if ($validator->fails()) {
@@ -138,11 +136,17 @@ class FactionController extends Controller
     {
         //
         try {
-            $faction = Faction::findOrFail($id); 
+            $faction = Faction::with("images")->findOrFail($id); 
             if ($faction->thumbnail) {
                 Storage::delete($faction->thumbnail);
             }
-            $faction->delete(); 
+
+            foreach ($faction->images as $image) {
+                Storage::delete($image->thumbnail);
+                $image->delete();
+            }
+            
+            $faction->delete(); //Delete the images also
             return response()->json(['message' => 'Faction deleted successfully']);
         } catch (\Exception $e) {
             info($e);
