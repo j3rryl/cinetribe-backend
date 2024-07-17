@@ -3,11 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MediaController;
+use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\FactionController;
 use App\Http\Controllers\Api\AuthController;
 
 Route::resource('/media', MediaController::class);
 Route::resource('/factions', FactionController::class);
+Route::resource('/genres', GenreController::class);
 
 // Login Contoller
 // Auth Controller
