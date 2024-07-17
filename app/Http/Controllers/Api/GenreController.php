@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Media;
+use App\Models\Genre;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\JsonResponse;
 
-class MediaController extends Controller
+class GenreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class MediaController extends Controller
     public function index(): JsonResponse
     {
         //
-        $media = Media::paginate(10); 
-        return response()->json($media);
+        $genre = Genre::paginate(10); 
+        return response()->json($genre);
     }
 
     /**
@@ -37,10 +37,8 @@ class MediaController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'genre_id' => 'nullable|exists:genres,id',
             'description' => 'required|string',
             'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'media_type' => 'required|in:movie,music,sport',
         ]);
     
         if ($validator->fails()) {
@@ -51,21 +49,21 @@ class MediaController extends Controller
         }
     
         try {
-            $media = Media::create($validator->validated());
+            $genre = Genre::create($validator->validated());
             
             if ($request->hasFile('thumbnail')) {
                 
-                $thumbnailPath = $request->file('thumbnail')->store('media_thumbnails');
-                $media->thumbnail = $thumbnailPath;
-                $media->save();
+                $thumbnailPath = $request->file('thumbnail')->store('genre_thumbnails');
+                $genre->thumbnail = $thumbnailPath;
+                $genre->save();
             } 
             return response()->json([
-                'message' => 'Media created successfully',
-                'media' => $media,
+                'message' => 'Genre created successfully',
+                'genre' => $genre,
             ], 201); 
         } catch (\Exception $e) {
             info($e);
-            return response()->json(['message' => 'Failed to create media'], 500);
+            return response()->json(['message' => 'Failed to create genre'], 500);
         }
     }
 
@@ -75,8 +73,8 @@ class MediaController extends Controller
     public function show(string $id): JsonResponse
     {
         //
-        $media = Media::findOrFail($id); 
-        return response()->json($media);
+        $genre = Genre::findOrFail($id); 
+        return response()->json($genre);
     }
 
     /**
@@ -96,10 +94,8 @@ class MediaController extends Controller
         
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string',
-            'genre_id' => 'sometimes|nullable|exists:genres,id',
             'description' => 'sometimes|required|string',
             'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'media_type' => 'sometimes|required|in:movie,music,sport',
         ]);
     
         if ($validator->fails()) {
@@ -110,24 +106,24 @@ class MediaController extends Controller
         }
     
         try {
-            $media = Media::findOrFail($id);
+            $genre = Genre::findOrFail($id);
             $validatedData = $validator->validated();
             if ($request->hasFile('thumbnail')) {
-                if ($media->thumbnail) {
-                    Storage::delete($media->thumbnail);
+                if ($genre->thumbnail) {
+                    Storage::delete($genre->thumbnail);
                 }
-                $thumbnailPath = $request->file('thumbnail')->store('media_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('genre_thumbnails');
                 $validatedData['thumbnail'] = $thumbnailPath;
             } 
-            $media->update($validatedData);
+            $genre->update($validatedData);
 
             return response()->json([
-                'message' => 'Media updated successfully',
-                'media' => $media->toArray(),
+                'message' => 'Genre updated successfully',
+                'genre' => $genre->toArray(),
             ], 200);
         } catch (\Exception $e) {
             info($e->getMessage());
-            return response()->json(['message' => 'Failed to update media'], 500);
+            return response()->json(['message' => 'Failed to update genre'], 500);
         }
     }
 
@@ -138,15 +134,15 @@ class MediaController extends Controller
     {
         //
         try {
-            $media = Media::findOrFail($id); 
-            if ($media->thumbnail) {
-                Storage::delete($media->thumbnail);
+            $genre = Genre::findOrFail($id); 
+            if ($genre->thumbnail) {
+                Storage::delete($genre->thumbnail);
             }
-            $media->delete(); 
-            return response()->json(['message' => 'Media deleted successfully']);
+            $genre->delete(); 
+            return response()->json(['message' => 'Genre deleted successfully']);
         } catch (\Exception $e) {
             info($e);
-            return response()->json(['message' => 'Failed to delete media'], 500);
+            return response()->json(['message' => 'Failed to delete genre'], 500);
         }
     }
 }
