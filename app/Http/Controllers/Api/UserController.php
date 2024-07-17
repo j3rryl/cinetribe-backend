@@ -46,7 +46,6 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|string',
             'phone_number' => 'sometimes|string',
-            'status' => 'required|string',
             'gender' => 'required|string',
             'dob' => 'required|string',
             'password' => 'required|string',
