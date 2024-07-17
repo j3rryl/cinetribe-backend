@@ -44,7 +44,7 @@ class UserController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'email' => 'required|string',
+            'email' => 'required|string|unique:users,email',
             'phone_number' => 'sometimes|string',
             'gender' => 'required|string',
             'dob' => 'required|string',
@@ -104,11 +104,11 @@ class UserController extends Controller
     public function update(Request $request, string $id): JsonResponse
     {
         //
-        
+        $user = User::findOrFail($id);
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string',
             'phone_number' => 'sometimes|required|string',
-            'email' => 'sometimes|required|string',
+            'email' => 'sometimes|required|string|unique:users,email,' . $user->id,
             'status' => 'sometimes|required|string',
             'gender' => 'sometimes|required|string',
             'dob' => 'sometimes|required|string',
@@ -123,7 +123,6 @@ class UserController extends Controller
         }
     
         try {
-            $user = User::findOrFail($id);
             $validatedData = $validator->validated();
             if ($request->hasFile('thumbnail')) {
                 if ($user->thumbnail) {
