@@ -12,10 +12,8 @@ Route::resource('/factions', FactionController::class);
 Route::resource('/genres', GenreController::class);
 
 // Login Contoller
-// Auth Controller
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
-
 
 Route::get('/user', function (Request $request) {
     return $request->user();
