@@ -60,7 +60,7 @@ class GenreController extends Controller
             
             if ($request->hasFile('thumbnail')) {
                 
-                $thumbnailPath = $request->file('thumbnail')->store('genre_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/genre_thumbnails');
                 $genre->thumbnail = $thumbnailPath;
                 $genre->save();
             } 
@@ -119,7 +119,7 @@ class GenreController extends Controller
                 if ($genre->thumbnail) {
                     Storage::delete($genre->thumbnail);
                 }
-                $thumbnailPath = $request->file('thumbnail')->store('genre_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/genre_thumbnails');
                 $validatedData['thumbnail'] = $thumbnailPath;
             } 
             $genre->update($validatedData);

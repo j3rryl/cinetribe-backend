@@ -61,7 +61,7 @@ class FactionController extends Controller
             
             if ($request->hasFile('thumbnail')) {
                 
-                $thumbnailPath = $request->file('thumbnail')->store('faction_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/faction_thumbnails');
                 $faction->thumbnail = $thumbnailPath;
                 $faction->save();
             } 
@@ -121,7 +121,7 @@ class FactionController extends Controller
                 if ($faction->thumbnail) {
                     Storage::delete($faction->thumbnail);
                 }
-                $thumbnailPath = $request->file('thumbnail')->store('faction_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/faction_thumbnails');
                 $validatedData['thumbnail'] = $thumbnailPath;
             } 
             $faction->update($validatedData);

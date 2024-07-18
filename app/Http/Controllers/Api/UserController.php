@@ -66,7 +66,7 @@ class UserController extends Controller
             
             if ($request->hasFile('thumbnail')) {
                 
-                $thumbnailPath = $request->file('thumbnail')->store('user_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/user_thumbnails');
                 $user->thumbnail = $thumbnailPath;
                 $user->save();
             } 
@@ -128,7 +128,7 @@ class UserController extends Controller
                 if ($user->thumbnail) {
                     Storage::delete($user->thumbnail);
                 }
-                $thumbnailPath = $request->file('thumbnail')->store('user_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/user_thumbnails');
                 $validatedData['thumbnail'] = $thumbnailPath;
             } 
             $user->update($validatedData);

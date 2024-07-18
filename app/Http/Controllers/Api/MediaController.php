@@ -64,7 +64,7 @@ class MediaController extends Controller
             
             if ($request->hasFile('thumbnail')) {
                 
-                $thumbnailPath = $request->file('thumbnail')->store('media_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/media_thumbnails');
                 $media->thumbnail = $thumbnailPath;
                 $media->save();
             } 
@@ -127,7 +127,7 @@ class MediaController extends Controller
                 if ($media->thumbnail) {
                     Storage::delete($media->thumbnail);
                 }
-                $thumbnailPath = $request->file('thumbnail')->store('media_thumbnails');
+                $thumbnailPath = $request->file('thumbnail')->store('public/media_thumbnails');
                 $validatedData['thumbnail'] = $thumbnailPath;
             } 
             $media->update($validatedData);
