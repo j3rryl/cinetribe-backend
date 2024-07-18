@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Models\Genre;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Media>
  */
@@ -19,7 +19,7 @@ class MediaFactory extends Factory
         return [
             //
             'name' => $this->faker->sentence(3), 
-            'genre_id' => null, 
+            'genre_id' => Genre::inRandomOrder()->first()->id ?? null, 
             'description' => $this->faker->paragraph, 
             'thumbnail' => $this->faker->imageUrl, 
             'media_type' => $this->faker->randomElement(['movie', 'music', 'sport']),
