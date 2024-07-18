@@ -24,7 +24,9 @@ class MediaController extends Controller
                 $q->where('name', 'like', '%' . $search . '%');
             });
         }
-        $media = $query->paginate(10);
+        $media = $query->with(['genre' => function($query) {
+            $query->select('id', 'name');
+        }])->paginate(10);
         return response()->json($media);
     }
 
@@ -82,7 +84,9 @@ class MediaController extends Controller
     public function show(string $id): JsonResponse
     {
         //
-        $media = Media::findOrFail($id); 
+        $media = Media::with(['genre' => function($query) {
+            $query->select('id', 'name'); 
+        }])->findOrFail($id); 
         return response()->json($media);
     }
 
