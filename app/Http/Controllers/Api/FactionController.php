@@ -17,8 +17,15 @@ class FactionController extends Controller
     public function index(): JsonResponse
     {
         //
-        $faction = Faction::paginate(10); 
-        return response()->json($faction);
+        $search = $request->query('query', '');
+        $query = Faction::query();
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
+        $factions = $query->paginate(10);
+        return response()->json($factions);
     }
 
     /**

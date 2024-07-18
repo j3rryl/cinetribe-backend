@@ -17,8 +17,15 @@ class GenreController extends Controller
     public function index(): JsonResponse
     {
         //
-        $genre = Genre::paginate(10); 
-        return response()->json($genre);
+        $search = $request->query('query', '');
+        $query = Genre::query();
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
+        $genres = $query->paginate(10);
+        return response()->json($genres);
     }
 
     /**

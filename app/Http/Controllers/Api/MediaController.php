@@ -17,7 +17,14 @@ class MediaController extends Controller
     public function index(): JsonResponse
     {
         //
-        $media = Media::paginate(10); 
+        $search = $request->query('query', '');
+        $query = Media::query();
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
+        $media = $query->paginate(10);
         return response()->json($media);
     }
 
