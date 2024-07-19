@@ -49,7 +49,7 @@ class UserController extends Controller
             'gender' => 'required|string',
             'dob' => 'required|string',
             'password' => 'required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
     
         if ($validator->fails()) {
@@ -112,7 +112,7 @@ class UserController extends Controller
             'status' => 'sometimes|required|string',
             'gender' => 'sometimes|required|string',
             'dob' => 'sometimes|required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
     
         if ($validator->fails()) {

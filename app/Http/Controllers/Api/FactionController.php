@@ -46,7 +46,7 @@ class FactionController extends Controller
             'name' => 'required|string',
             'media_id' => 'nullable|exists:genres,id',
             'description' => 'required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
     
         if ($validator->fails()) {
@@ -104,7 +104,7 @@ class FactionController extends Controller
             'name' => 'sometimes|required|string',
             'media_id' => 'sometimes|nullable|exists:genres,id',
             'description' => 'sometimes|required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
     
         if ($validator->fails()) {

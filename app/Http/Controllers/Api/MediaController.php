@@ -48,7 +48,7 @@ class MediaController extends Controller
             'name' => 'required|string',
             'genre_id' => 'nullable|exists:genres,id',
             'description' => 'required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'media_type' => 'required|in:movie,music,sport',
         ]);
     
@@ -109,7 +109,7 @@ class MediaController extends Controller
             'name' => 'sometimes|required|string',
             'genre_id' => 'sometimes|nullable|exists:genres,id',
             'description' => 'sometimes|required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'media_type' => 'sometimes|required|in:movie,music,sport',
         ]);
     

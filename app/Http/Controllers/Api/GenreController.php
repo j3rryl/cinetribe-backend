@@ -45,7 +45,7 @@ class GenreController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
     
         if ($validator->fails()) {
@@ -102,7 +102,7 @@ class GenreController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string',
             'description' => 'sometimes|required|string',
-            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
     
         if ($validator->fails()) {
