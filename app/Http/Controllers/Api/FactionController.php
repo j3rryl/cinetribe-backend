@@ -18,13 +18,21 @@ class FactionController extends Controller
     {
         //
         $search = $request->query('query', '');
+        $media_id = $request->query('media', '');
         $query = Faction::query();
         if (!empty($search)) {
             $query->where(function($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%');
             });
         }
-        $factions = $query->paginate(10);
+        if (!empty($media_id)) {
+            $query->where(function($q) use ($media_id) {
+                $q->where('media_id', $media_id);
+            });
+        }
+        $factions = $query->with(["media"=>function($q){
+            $q->select('id', 'name');
+        }])->paginate(10);
         return response()->json($factions);
     }
 
@@ -81,7 +89,9 @@ class FactionController extends Controller
     public function show(string $id): JsonResponse
     {
         //
-        $faction = Faction::findOrFail($id); 
+        $faction = Faction::with(['media'=>function($q){
+            $q->select('id', 'name');
+        }])->findOrFail($id); 
         return response()->json($faction);
     }
 
