@@ -72,12 +72,12 @@ class MediaControllerTest extends TestCase
             ],
         ]);
 
-        Storage::disk("local")->assertExists("media_thumbnails/".$file->hashName());
+        Storage::disk("local")->assertExists("public/media_thumbnails/".$file->hashName());
         // Assertion Update was successful
         $this->assertEquals('New Media Name', $media['name']);
         $this->assertEquals($genre->id, $media['genre_id']);
         $this->assertEquals('New Description', $media['description']);
-        $this->assertEquals("media_thumbnails/".$file->hashName(), $media['thumbnail']);
+        $this->assertEquals("public/media_thumbnails/".$file->hashName(), $media['thumbnail']);
         $this->assertEquals('music', $media['media_type']);
     }
 
@@ -130,12 +130,12 @@ class MediaControllerTest extends TestCase
             ],
         ]);
 
-        Storage::disk("local")->assertExists("media_thumbnails/".$file->hashName());
+        Storage::disk("local")->assertExists("public/media_thumbnails/".$file->hashName());
         // Assertion Update was successful
         $this->assertEquals('New Media Name', $media->name);
         $this->assertEquals($genre->id, $media->genre_id);
         $this->assertEquals('New Description', $media->description);
-        $this->assertEquals("media_thumbnails/".$file->hashName(), $media->thumbnail);
+        $this->assertEquals("public/media_thumbnails/".$file->hashName(), $media->thumbnail);
         $this->assertEquals('music', $media->media_type);
     }
 
