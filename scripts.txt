@@ -6,3 +6,5 @@ php artisan make:test MediaControllerTest
 
 
 Friday session
+
+php artisan passport:client --personal
